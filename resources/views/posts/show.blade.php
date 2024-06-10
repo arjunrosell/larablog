@@ -35,7 +35,7 @@
                                 </path>
                                 <path d="M0 0h24v24H0z" fill="none"></path>
                             </svg>
-                            <span class="ml-1">AliSher Azimi</span></a>
+                            <span class="ml-1">{{$post->user->name}}</span></a>
 
                         <a href="#" class="flex flex-row items-center hover:text-indigo-600">
                             <svg class="text-indigo-600" fill="currentColor" height="16px" aria-hidden="true"
