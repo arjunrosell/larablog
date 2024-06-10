@@ -1,3 +1,3 @@
 <x-layout>
-    <h1>Hi</h1>
+    <h1>Larablog</h1>
 </x-layout>
