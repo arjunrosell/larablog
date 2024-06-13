@@ -17,14 +17,22 @@
         </button>
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul
-                class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <x-navbar-link href="{{ route('home') }}" :active="request()->is('/')">Home</x-navbar-link>
+
                 <x-navbar-link href="{{ route('posts.index') }}" :active="request()->is('posts')">Posts</x-navbar-link>
+
+                @if (Auth::check() && Auth::user()->is_admin)
+                    <x-navbar-link href="/admin" :active="request()->is('admin')">Admin</x-navbar-link>
+                @endif
+
                 @guest
                     <x-navbar-link href="{{ route('login') }}" :active="request()->is('login')">Login</x-navbar-link>
                     <x-navbar-link href="{{ route('register') }}" :active="request()->is('register')">Register</x-navbar-link>
                 @endguest
+
                 @auth
+                    <span class="hidden md:block font-semibold text-blue-600">{{ auth()->user()->name }}</span>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
@@ -32,6 +40,7 @@
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Logout</x-navbar-link>
                 @endauth
+
             </ul>
         </div>
     </div>

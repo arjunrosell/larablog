@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 
 use function Pest\Laravel\post;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -57,6 +58,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        Gate::authorize('update', $post);
+
         return view('posts.edit', ['post'=> $post]);
     }
 
@@ -65,6 +68,8 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        Gate::authorize('update', $post);
+
         //validate the request
         $validated = $request->validate([
             'title' => 'required|min:5|max:255',
@@ -72,6 +77,7 @@ class PostController extends Controller
         ]);
 
         $post->update($validated);
+
         return to_route('posts.index');
     }
 
@@ -80,7 +86,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
+
         $post->delete();
+
         return to_route('posts.index');
     }
 }
