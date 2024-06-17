@@ -1,82 +1,78 @@
 <x-layout>
     <div class="flex justify-between mb-6">
         <x-header-title>Our Blog Posts</x-header-title>
-        @auth
+        {{-- @auth
             <div class="flex justify-center items-center">
                 <a href="{{ route('posts.create') }}">
                     <button type="button"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Create Blog
+                        Create Post
                     </button>
                 </a>
             </div>
-        @endauth
+        @endauth --}}
     </div>
-
-
 <div class="relative overflow-x-auto">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    Product name
+                    Post ID
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Color
+                    Title
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Category
+                    Created at
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Price
+                    Author
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Actions
                 </th>
             </tr>
         </thead>
         <tbody>
+            @forelse ($posts as $post )
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
+                    {{ $post->id }}
                 </th>
                 <td class="px-6 py-4">
-                    Silver
+                   {{ $post->title }}
                 </td>
                 <td class="px-6 py-4">
-                    Laptop
+                    {{ $post->created_at->format('d/m/Y') }}
                 </td>
+
                 <td class="px-6 py-4">
-                    $2999
+                    {{ $post->user->name }}
+                </td>
+                <td class="flex px-6 py-4 gap-1">
+                    <a href="{{ route('admin.posts.edit', $post->id) }}">
+                        <button type="button"
+                            class="text-white border border-gray-300  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            Edit
+                        </button>
+                    </a>
+                    <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="text-white bg-red-700 border border-gray-300  hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
+                            Delete
+                    </form>
                 </td>
             </tr>
+            @empty
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Microsoft Surface Pro
+                   No post found.
                 </th>
-                <td class="px-6 py-4">
-                    White
-                </td>
-                <td class="px-6 py-4">
-                    Laptop PC
-                </td>
-                <td class="px-6 py-4">
-                    $1999
-                </td>
             </tr>
-            <tr class="bg-white dark:bg-gray-800">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Magic Mouse 2
-                </th>
-                <td class="px-6 py-4">
-                    Black
-                </td>
-                <td class="px-6 py-4">
-                    Accessories
-                </td>
-                <td class="px-6 py-4">
-                    $99
-                </td>
-            </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
-
 </x-layout>

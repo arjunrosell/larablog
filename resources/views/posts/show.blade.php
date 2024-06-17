@@ -3,8 +3,10 @@
         <div class="max-w-3xl mx-auto">
             <div
                 class="mt-3 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
-                <div class="">
-
+                <div>
+                    <div class="relative mx-auto mb-2">
+                        <img class="w-full object-cover rounded-md" src="{{ asset('storage/'.$post['thumbnail'])}}"  alt="Random image">
+                    </div>
                     <a href="#"
                         class="text-indigo-600 hover:text-gray-700 transition duration-500 ease-in-out text-sm">
                         Election

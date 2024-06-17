@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\LoginUserController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\RegisterUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\RegisterUserController;
 
-
-Route::get('/', function () {
-    return view('welcome');})->name('home');
+// Route::get('/', function () {
+//     return view('welcome');})->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
@@ -18,9 +18,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/logout',[LoginUserController::class, 'logout']) -> name('logout');
 
-    Route::get('/admin', [AdminController::class, 'index'])->middleware('is-admin')->name('admin');
-
+    Route::middleware('is-admin')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+    Route::get('/admin/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
+    Route::put('/admin/posts/{post}', [AdminPostController::class, 'update'])->name('admin.posts.update');
+    Route::delete('/admin/posts/{post}', [AdminPostController::class, 'destroy'])->name('admin.posts.destroy');
+    });
 });
+
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 

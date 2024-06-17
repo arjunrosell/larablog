@@ -1,6 +1,5 @@
 <x-layout>
-    <div class="flex justify-between mb-6">
-        <x-header-title>Our Blog Posts</x-header-title>
+    <div class="flex justify-end mb-6">
         @auth
             <div class="flex justify-center items-center">
                 <a href="{{ route('posts.create') }}">
@@ -12,38 +11,44 @@
             </div>
         @endauth
     </div>
-    <div>
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach ($posts as $post)
-                <li>
-                    <div
-                        class="max-w-sm p-6 items-stretch h-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                        <a href="{{ route('posts.show', $post->id) }}">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                {{ $post->title }}</h5>
-                        </a>
-                        <p class="mb-5 font-normal text-gray-700 dark:text-gray-400">
-                            {{ Str::words($post->content, 25) }}
-                        </p>
-                        <div class="inline-flex items-center rounded-md shadow-sm">
-                            <a href="{{ route('posts.show', $post->id) }}">
-                                <button type="button"
-                                class="text-white bg-blue-700 border border-blue-300 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                    Read More
-                                </button>
-                            </a>
+
+    <div class="w-full dark:bg-gray-800">
+        <div class="mx-auto max-w-7xl pt-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    <x-header-title>Our Blog Posts</x-header-title>
+                </h2>
+                <p class="text-lg leading-8 text-gray-600 dark:text-gray-300">
+                    Dive into the latest in technology with our insightful blog posts.
+                </p>
+            </div>
+            <div
+                class="mx-auto mt-8 grid max-w-1xl auto-rows-fr grid-cols-1 gap-8 sm:mt-12 lg:mx-0 lg:max-w-none lg:grid-cols-3 ">
+                @foreach ($posts as $post)
+                <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 dark:bg-gray-700 px-8 py-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
+                    <img src="{{ asset('storage/'.$post['thumbnail']) }}" alt="Cinque Terre" class="absolute inset-0 -z-10 h-full w-full object-cover">
+                    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
+                    <div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+                    <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
+                        <time datetime="{{ $post->created_at->format('Y-m-d') }}" class="mr-8">{{ $post->created_at->format('d/m/Y') }}</time>
+                        <div class="-ml-4 flex items-center gap-x-4">
+                            <svg viewBox="0 0 2 2" class="-ml-0.5 h-0.5 w-0.5 flex-none fill-white/50">
+                                <circle cx="1" cy="1" r="1"></circle>
+                            </svg>
+                            <div class="flex gap-x-2.5">
+                                <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="" class="h-6 w-6 flex-none rounded-full bg-white/10"> {{ $post->user->name }}
+                            </div>
                         </div>
-                        @can('update', $post)
-                        <a href="{{ route('posts.edit', $post->id) }}">
-                            <button type="button"
-                                class="text-gray bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                                Edit Post
-                            </button>
-                        </a>
-                        @endcan
                     </div>
-                </li>
-            @endforeach
-        </ul>
+                    <h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+                        <a href="{{ route('posts.show', $post->id) }}"><span class="absolute inset-0"></span>{{ Str::limit($post->title, 68) }}</a>
+                    </h3>
+                </article>
+                @endforeach
+            </div>
+        </div>
+        <div class="mt-6">
+            {{ $posts->links() }}
+        </div>
     </div>
 </x-layout>
